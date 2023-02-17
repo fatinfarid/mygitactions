@@ -9,7 +9,7 @@ permissions:
 jobs:
  scan:
   name: Running aqua scanner
-  runs-on: T_daeadbm02
+  runs-on: vmsecprgstg
   steps:
   - name: Checkout
     uses: actions/checkout@v2
