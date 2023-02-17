@@ -1,0 +1,38 @@
+name: Aqua Docker Image Scan
+
+on: [push]
+
+#GITHUB_TOKEN permissions (required)
+permissions: 
+  contents: read
+  
+jobs:
+ scan:
+  name: Running aqua scanner
+  runs-on: T_daeadbm02
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+    
+  - name: Initiate Aqua Scan
+    uses: C2E/sag-security-aqua-scan-github-action@main
+    with:
+     image_location: 'registry'
+     docker_file: ''
+     report_format: 'html'
+     report_path: .
+     image_name: 'apama/apama-ctrl:10.13-log4j'
+     registry: "SAG Internal DTR"
+     scanner_user: ${{SECRETS.AQUA_SCANNER_USER}}
+     scanner_pwd: ${{SECRETS.AQUA_SCANNER_PASSWORD}}
+     aqua_url: ${{SECRETS.AQUA_URL}}
+     #docker_archive: ./DockerDirectory/python.tar
+     #report_analysis: true
+     #work_dir: /home/madh/arth/test/       
+     
+  - name: Upload artifacts
+    uses: actions/upload-artifact@v3
+    with:
+     name: Reports
+     path: |
+      ./report.**
